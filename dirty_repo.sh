@@ -22,8 +22,9 @@ load() {
 }
 load "logging.sh"
 
-which ruby 1>/dev/null || fatal "No 'ruby' found on PATH."
-which git-wtf.rb 1>/dev/null || fatal "No 'git-wtf.rb' found on PATH."
+which ruby 1>/dev/null || fatal "No 'ruby' found."
+GIT_WTF="$REPOBASE/$(basename $(pwd))/git-wtf.rb"
+[ -e "$GIT_WTF" ] || fatal "No 'git-wtf.rb' found."
 
 check() {
 	cd "$1"
@@ -37,7 +38,7 @@ check() {
 			fatal "Not a git repo: '$d/.git' doesn't exist"
 		fi
 
-		if ! msg="$(git-wtf.rb 2>&1)"; then
+		if ! msg="$($GIT_WTF 2>&1)"; then
 			error "Dirty tree in '$d' repo:\n'$msg'"
 			dirty=$(($dirty + 1))
 		fi
