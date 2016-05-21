@@ -4,12 +4,12 @@ Documentation=https://hkjn.me/rr
 
 [Service]
 Environment=GOPATH=/home/zero
-ExecStartPre=-/usr/bin/docker pull hkjn.me/rr
+ExecStartPre=-/usr/bin/docker pull hkjn/rr
 ExecStart=/usr/bin/bash -c ' \
   docker run --rm --name repo-report \
     -e GOPATH=/go \
     -v $GOPATH/src/hkjn.me:/go/src/hkjn.me \
-    hkjn.me/rr'
+    hkjn/rr'
 # TODO(hkjn): Try out rkt instead:
 # rkt run example.com/hello:0.0.1 ->
 # http://example.com/images/example.com/hello-0.0.1-linux-amd64.aci
