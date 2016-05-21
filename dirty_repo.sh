@@ -13,12 +13,16 @@
 set -euo pipefail
 
 GOPATH=${GOPATH:-""}
+REPOBASE=${REPOBASE:-"$GOPATH/src/hkjn.me"}
+LIB="$GOPATH/src/hkjn.me/lib/"
+
 [ "$GOPATH" ] || { echo "[$0] FATAL: GOPATH is not set." >&2; exit 1; }
-REPOBASE="$GOPATH/src/hkjn.me"
 
 load() {
-	local p="$GOPATH/src/hkjn.me/lib/$1"
-	source "$p" 2>/dev/null || { echo "[$0] FATAL: Couldn't find $p." >&2; exit 1; }	
+	source "$LIB/$1" 2>/dev/null || {
+		echo "[$0] FATAL: Couldn't find '$LIB/$1'." >&2
+		exit 1
+	}
 }
 load "logging.sh"
 
