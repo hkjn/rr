@@ -8,7 +8,7 @@ ExecStartPre=-/usr/bin/docker pull hkjn/rr
 ExecStart=/usr/bin/bash -c ' \
   docker run --rm --name repo-report \
     -e GOPATH=/go \
-    -v $GOPATH/src/hkjn.me:/go/src/hkjn.me \
+    -v $GOPATH/src/hkjn.me:/go/src/hkjn.me:ro \
     hkjn/rr'
 # TODO(hkjn): Try out rkt instead:
 # rkt run example.com/hello:0.0.1 ->
