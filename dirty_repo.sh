@@ -27,8 +27,8 @@ load() {
 load "logging.sh"
 
 which ruby 1>/dev/null || fatal "No 'ruby' found."
-GIT_WTF="$REPOBASE/$(basename $(pwd))/git-wtf.rb"
-[ -e "$GIT_WTF" ] || fatal "No 'git-wtf.rb' found."
+GIT_WTF="$REPOBASE/rr/git-wtf.rb"
+[ -e "$GIT_WTF" ] || fatal "No 'git-wtf.rb' found at '$GIT_WTF'."
 
 check() {
 	cd "$1"
