@@ -1,0 +1,17 @@
+#
+# Build image.
+#
+FROM golang
+
+MAINTAINER Henrik Jonsson <me@hkjn.me>
+
+WORKDIR /go/src/hkjn.me/rr/
+COPY *.go ./
+COPY vendor ./vendor/
+
+RUN go test -race && \
+    go vet && \
+		CGO_ENABLED=0 go build
+
+CMD ["mv", "-v", "rr", "/build/"]
+

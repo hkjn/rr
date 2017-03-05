@@ -4,7 +4,13 @@ MAINTAINER Henrik Jonsson <me@hkjn.me>
 
 RUN apk add --no-cache bash ruby git
 
-COPY ["dirty_repo.sh", "/usr/bin/"]
-COPY ["git-wtf.rb", "/usr/bin/"]
+ENV GOPATH /go
+ENV BINPATH $GOPATH/bin/hkjn.me/rr
+WORKDIR $BINPATH
 
-CMD ["dirty_repo.sh"]
+ADD git-wtf.rb ./
+COPY ["rr", "./"]
+ENV PATH $PATH:$BINPATH
+
+ENTRYPOINT ["rr", "-alsologtostderr"]
+CMD [""]
