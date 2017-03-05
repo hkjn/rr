@@ -58,16 +58,16 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	glog.Infof("FIXMEH: stdout=%s\n", b)
+	glog.Infof("%q gave stdout: %s\n", gitWtf, string(b))
 	b, err = ioutil.ReadAll(stderr)
 	if err != nil {
 		panic(err)
 	}
-	glog.Infof("FIXMEH: stderr=%s\n", b)
 	if err := cmd.Wait(); err != nil {
-		panic(err)
+		glog.Errorf("%q gave stderr: %s\n", gitWtf, string(b))
+		os.Exit(1)
+	} else {
+		glog.Infoln("No issues, all done.")
+		os.Exit(0)
 	}
-	//if err := cmd.Run(); err != nil {
-	//glog.Fatalf("git-wtf.rb command failed: %v\n", err)
-	//}
 }

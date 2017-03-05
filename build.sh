@@ -17,5 +17,6 @@ docker build -t rr-build -f Dockerfile.build .
 docker run --rm -it -v $(pwd):/build rr-build
 info "Building hkjn/rr image.."
 docker build -t hkjn/rr .
-#info "Cleaning up.."
-#docker rmi rr-build
+info "Cleaning up.."
+docker rmi rr-build
+docker push hkjn/rr
