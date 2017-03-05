@@ -27,21 +27,11 @@ type config struct {
 	RepoBase string
 }
 
-func main() {
-	flag.Parse()
-	var c config
-	if err := envconfig.Process("rr", &c); err != nil {
-		panic(err)
-	}
-	if c.RepoBase == "" {
-		c.RepoBase = filepath.Join(
-			os.Getenv("GOPATH"),
-			"src/hkjn.me",
-		)
-	}
-	glog.Infof("rr tool checking repos under %q..\n", c.RepoBase)
+// repoHasIssues returns false if there were no issues in given repo, or true otherwise.
+func repoHasIssues(m string) bool {
 	gitWtf := "git-wtf.rb"
-	glog.V(1).Infof("about to run %q..\n", gitWtf)
+	os.Chdir(m)
+	glog.V(1).Infof("about to run %q for %q..\n", gitWtf, m)
 	cmd := exec.Command(gitWtf)
 	stdout, err := cmd.StdoutPipe()
 	if err != nil {
@@ -58,16 +48,53 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	glog.Infof("FIXMEH: stdout=%s\n", b)
+	out := string(b)
+	os.Chdir("..")
 	b, err = ioutil.ReadAll(stderr)
 	if err != nil {
 		panic(err)
 	}
-	glog.Infof("FIXMEH: stderr=%s\n", b)
+	eout := string(b)
 	if err := cmd.Wait(); err != nil {
+		glog.Infof("--- start of %q output ---\n", m)
+		glog.Infof(out)
+		glog.Infof("--- end of %q output ---\n", m)
+		glog.Errorf("--- start of %q errors ---\n", m)
+		glog.Errorf(eout)
+		glog.Errorf("--- end of %q errors ---\n", m)
+		return true
+	}
+	return false
+}
+
+func main() {
+	flag.Parse()
+	var c config
+	if err := envconfig.Process("rr", &c); err != nil {
 		panic(err)
 	}
-	//if err := cmd.Run(); err != nil {
-	//glog.Fatalf("git-wtf.rb command failed: %v\n", err)
-	//}
+	if c.RepoBase == "" {
+		c.RepoBase = filepath.Join(
+			os.Getenv("GOPATH"),
+			"src/hkjn.me",
+		)
+	}
+	glog.Infof("Checking repos under %q..\n", c.RepoBase)
+	matches, err := filepath.Glob(filepath.Join(c.RepoBase, "*"))
+	if err != nil {
+		panic(err)
+	}
+	failed := false
+	for _, m := range matches {
+		glog.Infof("Checking %q..\n", m)
+		if repoHasIssues(m) {
+			failed = true
+		}
+	}
+	if failed {
+		glog.Errorln("Some repos had issues.")
+		os.Exit(1)
+	}
+	glog.Infoln("No issues, all done.")
+	os.Exit(0)
 }

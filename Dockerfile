@@ -10,8 +10,7 @@ WORKDIR $BINPATH
 
 ADD git-wtf.rb ./
 COPY ["rr", "./"]
-#ADD rr ./
 ENV PATH $PATH:$BINPATH
 
-ENTRYPOINT ["rr"]
-CMD ["-alsologtostderr", "-v", "1"]
+ENTRYPOINT ["rr", "-alsologtostderr"]
+CMD [""]
