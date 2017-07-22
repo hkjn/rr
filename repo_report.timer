@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer that stats repo_report.service
+
+[Timer]
+# Run every 5 min.
+OnCalendar=*:0/5
+
+Persistent=true
+
+[Install]
+WantedBy=local.target
