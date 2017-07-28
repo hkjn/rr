@@ -7,14 +7,14 @@ Environment=GOPATH=/home/zero
 ExecStartPre=-/usr/bin/docker pull hkjn/rr
 ExecStart=/usr/bin/bash -c ' \
   docker run --rm --name repo-report \
-	    -e GOPATH=/go \
-			    -v $GOPATH/src/hkjn.me:/go/src/hkjn.me:ro \
-					    hkjn/rr > /etc/reporter/repo_facts.json'
-							# TODO(hkjn): Try out rkt instead:
-							# rkt run example.com/hello:0.0.1 ->
-							# http://example.com/images/example.com/hello-0.0.1-linux-amd64.aci
-							# Or:
-							# rkt run https://github.com/hkjn/rr/releases/download/v0.1/rr-v0.1-linux-x86_64.aci
+    -e GOPATH=/go \
+    -v $GOPATH/src/hkjn.me:/go/src/hkjn.me:ro \
+    hkjn/rr > /etc/reporter/repo_facts.json'
+# TODO(hkjn): Try out rkt instead:
+# rkt run example.com/hello:0.0.1 ->
+# http://example.com/images/example.com/hello-0.0.1-linux-amd64.aci
+# Or:
+# rkt run https://github.com/hkjn/rr/releases/download/v0.1/rr-v0.1-linux-x86_64.aci
 
 [Install]
 WantedBy=default.target

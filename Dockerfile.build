@@ -3,7 +3,7 @@
 #
 FROM golang
 
-MAINTAINER Henrik Jonsson <me@hkjn.me>
+LABEL maintainer="Henrik Jonsson <me@hkjn.me>"
 
 WORKDIR /go/src/hkjn.me/rr/
 COPY *.go ./

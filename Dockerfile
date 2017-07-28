@@ -1,6 +1,6 @@
 FROM alpine
 
-MAINTAINER Henrik Jonsson <me@hkjn.me>
+LABEL maintainer="Henrik Jonsson <me@hkjn.me>"
 
 RUN apk add --no-cache bash ruby git
 
